@@ -1,0 +1,35 @@
+.menu{
+    position:fixed;
+    height: 100%;
+    width: 70%;
+    background: white;
+    box-shadow: 2px 0px 5px black;
+    top:0;
+    left:0;
+    z-index: 100;
+    color: white;
+    text-shadow: 0px 0px 4px black;
+    font-size: 2rem;
+    transition: all 0.6s;
+}
+
+.menu.closed{
+    transform: translate(-104%);
+}
+
+.menu ul{
+    list-style-type: none;
+    position: relative;
+    float: left;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu li a {
+    text-decoration: none;
+    color: black;
+}
+.menu li a:hover{
+    color: orange;
+}

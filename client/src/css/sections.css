@@ -1,0 +1,11 @@
+.sections {
+  padding: 2em 0px;
+}
+.sections:nth-child(even) {
+  color: #DDDDDD;
+  background-color: #00162c;
+}
+.sections:nth-child(odd) {
+  color: #DDDDDD;
+  background-color: #101025;
+}
