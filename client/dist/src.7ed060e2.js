@@ -32997,47 +32997,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/css-loader.js"}],"../src/posts.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var d = new Date();
-var dzien = d.getDate();
-var miesiac = d.getMonth() + 1;
-var rok = d.getFullYear();
-var time = "".concat(d.getHours(), ":").concat(d.getMinutes(), ":").concat(d.getSeconds());
-var data = "".concat(dzien, ".").concat(miesiac, ".").concat(rok, " - ").concat(time);
-var posts = [{
-  id: 0,
-  title: 'Example post 0',
-  createdAt: data,
-  lastModified: data,
-  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum aliquam enim vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis nisl ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in orci non libero pellentesque accumsan. Phasellus pellentesque ligula in nulla malesuada, eu pulvinar diam rhoncus. Nam fringilla posuere lectus sed faucibus.',
-  shortContent: '',
-  author: 'Admin'
-}, {
-  id: 1,
-  title: 'Example post 1',
-  createdAt: data,
-  lastModified: data,
-  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum aliquam enim vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis nisl ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in orci non libero pellentesque accumsan. Phasellus pellentesque ligula in nulla malesuada, eu pulvinar diam rhoncus. Nam fringilla posuere lectus sed faucibus.',
-  shortContent: '',
-  author: 'Admin'
-}, {
-  id: 2,
-  title: 'Example post 2',
-  createdAt: data,
-  lastModified: data,
-  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum aliquam enim vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis nisl ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in orci non libero pellentesque accumsan. Phasellus pellentesque ligula in nulla malesuada, eu pulvinar diam rhoncus. Nam fringilla posuere lectus sed faucibus.',
-  shortContent: '',
-  author: 'Admin'
-}];
-var _default = posts;
-exports.default = _default;
-},{}],"../src/components/Home/Footer.js":[function(require,module,exports) {
+},{"_css_loader":"../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/css-loader.js"}],"../src/components/Home/Footer.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33048,8 +33008,6 @@ exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 
 require("../../css/sections.css");
-
-var _posts = _interopRequireDefault(require("../../posts"));
 
 var _Post = _interopRequireDefault(require("../Post/Post"));
 
@@ -33105,7 +33063,7 @@ function (_Component) {
 }(_react.Component);
 
 exports.default = Footer;
-},{"react":"../node_modules/react/index.js","../../css/sections.css":"../src/css/sections.css","../../posts":"../src/posts.js","../Post/Post":"../src/components/Post/Post.js"}],"../node_modules/symbol-observable/es/ponyfill.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../../css/sections.css":"../src/css/sections.css","../Post/Post":"../src/components/Post/Post.js"}],"../node_modules/symbol-observable/es/ponyfill.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35318,7 +35276,7 @@ var app = _react.default.createElement(_reactRedux.Provider, {
 }, _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", null, _react.default.createElement(_Navbar.default, null), _react.default.createElement(_Router.default, null), _react.default.createElement(_Footer.default, null))));
 
 _reactDom.default.render(app, document.getElementById('main'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./components//Navbar/Navbar":"../src/components/Navbar/Navbar.js","./Router":"../src/Router.js","./css/Index.css":"../src/css/Index.css","./components/Home/Footer":"../src/components/Home/Footer.js","./redux/store":"../src/redux/store.js","react-redux":"../node_modules/react-redux/es/index.js","./redux/reducers/user-reducer":"../src/redux/reducers/user-reducer.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./components//Navbar/Navbar":"../src/components/Navbar/Navbar.js","./Router":"../src/Router.js","./css/Index.css":"../src/css/Index.css","./components/Home/Footer":"../src/components/Home/Footer.js","./redux/store":"../src/redux/store.js","react-redux":"../node_modules/react-redux/es/index.js","./redux/reducers/user-reducer":"../src/redux/reducers/user-reducer.js"}],"../../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -35346,7 +35304,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50976" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57225" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -35521,5 +35479,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js","../src/index.js"], null)
+},{}]},{},["../../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js","../src/index.js"], null)
 //# sourceMappingURL=/src.7ed060e2.js.map
