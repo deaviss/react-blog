@@ -10,3 +10,16 @@ In blog database create collections: 'posts', 'comments'
 After you are done with mongodb, you can proceed to run this procject.  
 Firstly you need to run the './server/index.js' using node/nodemon.  
 Then go to './client/' and run 'npm run dev' to run react client via parcel.  
+
+## Done
+1) Receiving all posts from database  
+2) Receiving specific post from database  
+3) Receiving all comments from specific post  
+4) Posting new comments to specific post  
+
+## To-do
+1) Logging (working on it)  
+2) Dashboard where an admin can add new post or modify existing posts (posts at the moment are hard-coded in the database)  
+3) Better styling. Almost everything is now scaleable with 'vh' so the page looks the same as you zoom in/out  
+4) Post rating from 1 to 5  
+5) Comment rating (this does exist, but it's hard-coded)
