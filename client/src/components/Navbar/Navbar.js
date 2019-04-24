@@ -13,23 +13,26 @@ export default class Navbar extends Component {
   menuContent = (
     <ul>
       <li><a href="/">Contact</a></li>
+      {getUser() && <li><a href="/dashboard">Dashboard</a></li>}
       <li><a href="/">About</a></li>
     </ul>
   )
 
+  
   componentDidMount() {
     window.onscroll = this.handleScroll;
   }
 
   handleScroll = () => { 
+    var toolbar = document.getElementById("toolbar");
     if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
       // when you scroll down
-      document.getElementById("toolbar").classList.remove('non_scrolled')
-      document.getElementById("toolbar").classList.add('scrolled')
+      toolbar.classList.remove('non_scrolled')
+      toolbar.classList.add('scrolled')
     } else {
       // when there's no scrolling
-      document.getElementById("toolbar").classList.add('non_scrolled')
-      document.getElementById("toolbar").classList.remove('scrolled')
+      toolbar.classList.add('non_scrolled')
+      toolbar.classList.remove('scrolled')
     }
   }
 

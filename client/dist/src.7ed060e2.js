@@ -31763,19 +31763,23 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "menuContent", _react.default.createElement("ul", null, _react.default.createElement("li", null, _react.default.createElement("a", {
       href: "/"
-    }, "Contact")), _react.default.createElement("li", null, _react.default.createElement("a", {
+    }, "Contact")), (0, _user.getUser)() && _react.default.createElement("li", null, _react.default.createElement("a", {
+      href: "/dashboard"
+    }, "Dashboard")), _react.default.createElement("li", null, _react.default.createElement("a", {
       href: "/"
     }, "About"))));
 
     _defineProperty(_assertThisInitialized(_this), "handleScroll", function () {
+      var toolbar = document.getElementById("toolbar");
+
       if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
         // when you scroll down
-        document.getElementById("toolbar").classList.remove('non_scrolled');
-        document.getElementById("toolbar").classList.add('scrolled');
+        toolbar.classList.remove('non_scrolled');
+        toolbar.classList.add('scrolled');
       } else {
         // when there's no scrolling
-        document.getElementById("toolbar").classList.add('non_scrolled');
-        document.getElementById("toolbar").classList.remove('scrolled');
+        toolbar.classList.add('non_scrolled');
+        toolbar.classList.remove('scrolled');
       }
     });
 
@@ -32331,7 +32335,6 @@ function (_Component) {
   _createClass(CommentForm, [{
     key: "render",
     value: function render() {
-      console.log(this.props);
       return _react.default.createElement("form", {
         className: "comment_form",
         onSubmit: this.handleSubmit
@@ -32450,7 +32453,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(this.state);
       return _react.default.createElement("div", {
         className: "comments"
       }, _react.default.createElement("div", {
@@ -32459,7 +32461,7 @@ function (_Component) {
         postId: this.props.id
       }), _react.default.createElement("header", {
         className: "comments_header"
-      }, this.state.comments.length == 0 && _react.default.createElement("p", null, "Brak komentarzy do tego posta"), this.state.comments.length > 0 && _react.default.createElement("p", null, "Komentarze do tego posta")), this.state.comments.length > 0 && this.state.comments.map(function (x) {
+      }, this.state.comments.length == 0 && _react.default.createElement("p", null, "There aren't any comments about this post"), this.state.comments.length > 0 && _react.default.createElement("p", null, "Comments about this post")), this.state.comments.length > 0 && this.state.comments.map(function (x) {
         return _react.default.createElement(_Comment.default, {
           key: Math.random(),
           comment: x
@@ -32592,6 +32594,8 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _user = require("../../user");
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -32659,11 +32663,12 @@ function (_Component) {
 
         if (res.user.token) {
           var usr = {
-            name: res.user.token.userName,
-            token: res.user.token.tokenId
+            name: res.user.name,
+            token: res.user.token
           };
           console.log(usr);
           localStorage.setItem('user', JSON.stringify(usr));
+          window.location.href = '/';
         }
       });
     });
@@ -32672,6 +32677,13 @@ function (_Component) {
   }
 
   _createClass(LoginForm, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      if ((0, _user.getUser)()) {
+        window.location.href = '/';
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("section", {
@@ -32717,7 +32729,7 @@ function (_Component) {
 }(_react.Component);
 
 exports.default = LoginForm;
-},{"react":"../node_modules/react/index.js"}],"../src/pages/Loging/Login.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../../user":"../src/user.js"}],"../src/pages/Loging/Login.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35307,9 +35319,6 @@ if ((0, _user.getUser)()) {
   (0, _user.checkToken)();
 }
 
-if ((0, _user.getUser)()) console.log('zalogowany');
-console.log('user', (0, _user.getUser)());
-
 var app = _react.default.createElement(_reactRedux.Provider, {
   store: _store.default
 }, _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", null, _react.default.createElement(_Navbar.default, null), _react.default.createElement(_Router.default, null), _react.default.createElement(_Footer.default, null))));
@@ -35343,7 +35352,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60483" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60585" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

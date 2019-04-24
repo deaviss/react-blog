@@ -37,7 +37,6 @@ export default class CommentForm extends Component {
 	} 
 
 	render() {
-		console.log(this.props)
 		return (
 			<form className="comment_form" onSubmit={this.handleSubmit}>
 				<span className="s">Nick</span>

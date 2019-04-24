@@ -171,20 +171,32 @@ app.post('/login', async (req,res) => {
 	if(count && count > 0){
 		var usr = usr[0];
 		var tokens = await db.findDocFieldsByFilter('tokens', {userName: usr.login})
-		console.log(tokens)
-		var token;
+		var token = undefined;
 		var ttl = 120000
 		
 		tokens.forEach(t=>{
 			var date1 = new Date(t.created / 1000 + ttl) / 1;
 			var date = new Date().getTime() / 1000;
 			if(date1 >= date) {
-				token = t;
+				token = t.tokenId;
 			}
 		})
+		if(!token){
+			var randomLetters = 'abcdefghijklmnopqrstyzv0123456789';
+			var newToken = "";
+			while(newToken.length < 13){
+				newToken += randomLetters[Math.floor(Math.random() * randomLetters.length)]
+			}
+			token = newToken;
+			db.insertDocumentWithIndex('tokens', {
+				userName: usr.login,
+				created: Date.now(),
+				tokenId: token
+			})
+		}
 		returnedUser = {
-			canLogin: true,
-			token: token
+			token: token,
+			name: usr.login
 		}
 		console.log(`Account ${user.login} has logged in!`)
 		res.json({message: `Succesfully logged in as ${user.login}`, user: returnedUser});

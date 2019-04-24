@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
-
+import { getUser } from '../../user'
 export default class LoginForm extends Component {
+
+	componentWillMount() {
+		if(getUser()){
+			window.location.href = '/';
+		}
+	}
+
 	state = {
 		login: '',
 		password: '',
@@ -28,11 +35,12 @@ export default class LoginForm extends Component {
 			console.log(res.message);
 			if(res.user.token){
 				var usr = {
-					name: res.user.token.userName,
-					token: res.user.token.tokenId
+					name: res.user.name,
+					token: res.user.token
 				}
 				console.log(usr);
 				localStorage.setItem('user', JSON.stringify(usr))
+				window.location.href = '/';
 			}
 		})
 	}

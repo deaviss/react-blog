@@ -15,17 +15,16 @@ export default class Comments extends Component {
 	}
 
 	render() {
-		console.log(this.state)
 		return (
 			<div className="comments">
 				<div className="comments_container">
 					<CommentForm postId={this.props.id}/>
 					<header className="comments_header">
 					{this.state.comments.length == 0 && 
-						<p>Brak komentarzy do tego posta</p>
+						<p>There aren't any comments about this post</p>
 					}
 					{this.state.comments.length > 0 &&
-						<p>Komentarze do tego posta</p>
+						<p>Comments about this post</p>
 					}
 					</header>
 					{this.state.comments.length > 0 && 

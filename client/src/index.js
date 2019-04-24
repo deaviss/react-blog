@@ -13,10 +13,6 @@ if(getUser()){
 	checkToken();
 }
 
-if(getUser())
-	console.log('zalogowany')
-
-	console.log('user',getUser())
 
 
 
