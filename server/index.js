@@ -15,36 +15,6 @@ var miesiac = d.getMonth() + 1
 var rok = d.getFullYear()
 var time = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
 var data = `${dzien}.${miesiac}.${rok} - ${time}`;
-var posts = [
-	{
-		id: 0,
-		title: 'Example post 0',
-		createdAt: "21.4.2019 - 0:29:18",
-		lastModified: "21.4.2019 - 0:29:18",
-		content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum aliquam enim vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis nisl ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in orci non libero pellentesque accumsan. Phasellus pellentesque ligula in nulla malesuada, eu pulvinar diam rhoncus. Nam fringilla posuere lectus sed faucibus.',
-		shortContent: '',
-		author: 'Admin'
-	},
-	{
-		id: 1,
-		title: 'Example post 1',
-		createdAt: "21.4.2019 - 0:29:18",
-		lastModified: "21.4.2019 - 0:29:18",
-		content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum aliquam enim vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis nisl ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in orci non libero pellentesque accumsan. Phasellus pellentesque ligula in nulla malesuada, eu pulvinar diam rhoncus. Nam fringilla posuere lectus sed faucibus.',
-		shortContent: '',
-		author: 'Admin'
-	},
-	{
-		id: 2,
-		title: 'Example post 2',
-		createdAt: "21.4.2019 - 0:29:18",
-		lastModified: "21.4.2019 - 0:29:18",
-		content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum aliquam enim vitae pharetra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis nisl ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in orci non libero pellentesque accumsan. Phasellus pellentesque ligula in nulla malesuada, eu pulvinar diam rhoncus. Nam fringilla posuere lectus sed faucibus.',
-		shortContent: '',
-		author: 'Admin'
-	},
-	
-]
 
 function search(query) {
   return function(element) {
@@ -73,7 +43,7 @@ function search(query) {
 async function conn(onConn,onErr){
 	await db.connect({url: "mongodb://localhost:27017/blog"}, onConn, onErr);
 }
-
+conn(()=>console.log('polaczono'), () => console.log('err'));
 
 app.use(function (req, res, next) {
 
@@ -95,12 +65,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/getAllPosts',async function(req,res){
-	await db.connect({url: "mongodb://localhost:27017/blog"}, async () => {
-		res.json( await db.findDoc('posts'))
-	})
-	
-	
-
+	res.json( await db.findDoc('posts'))
 }); 
 app.get('/getPost', async function(req,res){
 	/*
@@ -115,43 +80,29 @@ app.get('/getPost', async function(req,res){
 	if(req.query.title) query.title = req.query.title;
 	if(req.query.author) query.author = req.query.author;
 
-	var _posts;
-	await db.connect({url: "mongodb://localhost:27017/blog"}, async () => {
-		_posts =  await db.findDoc('posts')
 
-		var rtn = _posts.filter(search(query))
-		if(rtn.length > 0)
-			res.json(rtn[0])
-		else
-			res.status(400).send({
-				message: 'This is an error!'
-			});
-	})
+	var _posts =  await db.findDoc('posts')
 
-	
+	var rtn = _posts.filter(search(query))
+	if(rtn.length > 0)
+		res.json(rtn[0])
+	else
+		res.status(400).send({
+			message: 'This is an error!'
+		});
+
 }); 
 app.get('/getComments', async function(req,res){
-	/*
-			Custom search by queries. Eg:
-			/getPost/?id=0
-			/getPost/?title=Example post 2
-			/getPost/?author=Admin
-			/getPost/?author=Admin&title=Example post 2&id=2
-	*/
+
 	var query = {};
 	if(req.query.id) query.postId = req.query.id;
-	var _comments;
-	await db.connect({url: "mongodb://localhost:27017/blog"}, async () => {
-		_comments = await db.findDoc('comments')
+	var _comments = await db.findDoc('comments')
 
-		var rtn = _comments.filter(search(query))
-		if(rtn.length > 0)
-			res.json(rtn)
-		else
-			res.send([]);
-	})
-
-	
+	var rtn = _comments.filter(search(query))
+	if(rtn.length > 0)
+		res.json(rtn)
+	else
+		res.send([]);
 }); 
 
 app.post('/addComment', async (req,res) => {
@@ -166,19 +117,16 @@ app.post('/addComment', async (req,res) => {
 		return false;
 	}
 
-	var commentCount = await db.connect({url: "mongodb://localhost:27017/blog"}, async () => {
-		var coment = await db.findDocFieldsByFilter('comments', {nick: comment.nick, content: comment.content, postId: comment.postId})
-		var count = coment.length
-		if(count && count > 0){
-			res.json({message: `This comment already exists!`})
-		} else {
-			db.insertDocumentWithIndex('comments', comment)
-			console.log(`Comment succesfully added`)
-			res.json({message: `Comment succesfully added`});
-		}
-	})
-
 	
+	var coment = await db.findDocFieldsByFilter('comments', {nick: comment.nick, content: comment.content, postId: comment.postId})
+	var count = coment.length
+	if(count && count > 0){
+		res.json({message: `This comment already exists!`})
+	} else {
+		db.insertDocumentWithIndex('comments', comment)
+		console.log(`Comment succesfully added`)
+		res.json({message: `Comment succesfully added`});
+	}
 })
 
 app.post('/register', async (req,res) => {
@@ -193,19 +141,16 @@ app.post('/register', async (req,res) => {
 		return false;
 	}
 
-	var userCount = await db.connect({url: "mongodb://localhost:27017/blog"}, async () => {
-		var usr = await db.findDocFieldsByFilter('users', {login: user.login})
-		var count = usr.length
-		if(count && count > 0){
-			res.json({message: `User ${user.login} already exists!`})
-		} else {
-			db.insertDocumentWithIndex('users', user)
-			console.log(`Account ${user.login} has been created!`)
-			res.json({message: `Succesfully created user ${user.login}`});
-		}
-	})
 
-	
+	var usr = await db.findDocFieldsByFilter('users', {login: user.login})
+	var count = usr.length
+	if(count && count > 0){
+		res.json({message: `User ${user.login} already exists!`})
+	} else {
+		db.insertDocumentWithIndex('users', user)
+		console.log(`Account ${user.login} has been created!`)
+		res.json({message: `Succesfully created user ${user.login}`});
+	} 
 })
 app.post('/login', async (req,res) => {
 	var user = req.body;
@@ -218,27 +163,50 @@ app.post('/login', async (req,res) => {
 		res.json({message: "Password is too short!"})
 		return false;
 	}
-
-	var userCount = await db.connect({url: "mongodb://localhost:27017/blog"}, async () => {
-		var usr = await db.findDocFieldsByFilter('users', {login: user.login, password: user.password})
-		var count = usr.length
-		var returnedUser = {
-			canLogin: false
-		}
-		if(count && count > 0){
-			returnedUser = {
-				canLogin: true
+	var usr = await db.findDocFieldsByFilter('users', {login: user.login, password: user.password})
+	var count = usr.length
+	var returnedUser = {
+		canLogin: false
+	}
+	if(count && count > 0){
+		var usr = usr[0];
+		var tokens = await db.findDocFieldsByFilter('tokens', {userName: usr.login})
+		console.log(tokens)
+		var token;
+		var ttl = 120000
+		
+		tokens.forEach(t=>{
+			var date1 = new Date(t.created / 1000 + ttl) / 1;
+			var date = new Date().getTime() / 1000;
+			if(date1 >= date) {
+				token = t;
 			}
-			console.log(`Account ${user.login} has logged in!`)
-			res.json({message: `Succesfully logged in as ${user.login}`, user: returnedUser});
-		} else {
-			res.json({message: `User ${user.login} does not exists!`, user: returnedUser})
+		})
+		returnedUser = {
+			canLogin: true,
+			token: token
 		}
-	})
-
-	
+		console.log(`Account ${user.login} has logged in!`)
+		res.json({message: `Succesfully logged in as ${user.login}`, user: returnedUser});
+	} else {
+		res.json({message: `User ${user.login} does not exists!`, user: returnedUser})
+	}
 })
 
+app.post('/checkToken', async (req,res) => {
+	var token = await db.findDocFieldsByFilter('tokens', {tokenId: req.body.token, userName: req.body.name})
+	token = token[0];
+	if(token){
+		res.json({
+			canProceed: true
+		})
+	}
+	else {
+		res.json({
+			canProceed: false
+		})
+	}
+});
 
 server.listen(_PORT);
 console.log(`Serwer ruszyl: http://localhost:${_PORT}`);

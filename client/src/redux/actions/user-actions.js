@@ -1,9 +1,5 @@
 
 
-
-
-
-
 // export const UPDATE_USER = 'user:updateUser'
 // export var JUZER = 'admin'
 // export function updateUser(newUser) {

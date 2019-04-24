@@ -3,6 +3,7 @@ import '../../css/Navbar.css';
 import HamburgerButton from './HamburgerButton';
 import Wygaszacz from './Wygaszacz/Wygaszacz';
 import Menu from './Wygaszacz/Menu';
+import { getUser, checkToken } from '../../user'
 export default class Navbar extends Component {
 
 	state = {
@@ -50,6 +51,7 @@ export default class Navbar extends Component {
         <Wygaszacz click={this.closeMenu} isClosed={this.state.isMenuClosed} />
         <Menu isClosed={this.state.isMenuClosed} menuContent={this.menuContent}/>
         <span className="logo"><a href="/">BLOG</a></span>
+        {getUser() && <span>Zalogowano jako {getUser().name}</span>}
         <div className="links">
           {this.menuContent}
         </div>

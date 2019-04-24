@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Jumbotron from '../components/Jumbotron/Jumbotron';
 import { connect } from 'react-redux'
 import { fetchPosts } from '../redux/actions/post-actions'
+import PostList from '../components/Post/PostList';
 // import Post from '../components/Post/Post';
 
 
@@ -25,7 +26,7 @@ export default connect(mapStateToProps, { fetchPosts })(class Home extends Compo
 				/>
 				<section className="sections section_a">
 					{this.props.posts.map(e=>(
-						<Post post={e} key={e.id} />
+						<PostList post={e} key={e.id} />
 					))}
 			</section>
 			</div>

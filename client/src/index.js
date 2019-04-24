@@ -5,21 +5,18 @@ import Navbar from './components//Navbar/Navbar';
 import Router from './Router';
 import './css/Index.css';
 import Footer from './components/Home/Footer';
-
 import store from './redux/store'
 import { Provider } from 'react-redux';
-import userReducer from './redux/reducers/user-reducer'
+import { getUser, checkToken } from './user'
 
+if(getUser()){
+	checkToken();
+}
 
-// const reducers = combineReducers({
-// 	user: userReducer
-// })
-// const store = createStore(
-// 	reducers,
-// 	{
-// 		user: 'admin'
-// 	}
-// )
+if(getUser())
+	console.log('zalogowany')
+
+	console.log('user',getUser())
 
 
 

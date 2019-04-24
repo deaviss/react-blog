@@ -24,11 +24,15 @@ export default class LoginForm extends Component {
 		})
 		.then(res => res.json())
 		.then(res => {
-			console.log(res.message)
-			if(res.user.canLogin == true){
-				console.log('zalogowano')
-			}else {
-				console.log('nie zalogowano')
+			console.log(res)
+			console.log(res.message);
+			if(res.user.token){
+				var usr = {
+					name: res.user.token.userName,
+					token: res.user.token.tokenId
+				}
+				console.log(usr);
+				localStorage.setItem('user', JSON.stringify(usr))
 			}
 		})
 	}
