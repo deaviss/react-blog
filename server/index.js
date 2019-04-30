@@ -76,7 +76,7 @@ app.get('/getPost', async function(req,res){
 			/getPost/?author=Admin&title=Example post 2&id=2
 	*/
 	var query = {};
-	if(req.query.id) query.id = req.query.id;
+	if(req.query.id) query.idx = req.query.id;
 	if(req.query.title) query.title = req.query.title;
 	if(req.query.author) query.author = req.query.author;
 
@@ -84,10 +84,12 @@ app.get('/getPost', async function(req,res){
 	var _posts =  await db.findDoc('posts')
 
 	var rtn = _posts.filter(search(query))
+	console.log(query)
+	console.log(rtn)
 	if(rtn.length > 0)
 		res.json(rtn[0])
 	else
-		res.status(400).send({
+		res.send({
 			message: 'This is an error!'
 		});
 
@@ -142,7 +144,7 @@ app.post('/register', async (req,res) => {
 	}
 
 
-	var usr = await db.findDocFieldsByFilter('users', {login: user.login})
+	var usr = await db.findDocFieldsByFilter('users', {login: user.login.trim().toLowerCase()})
 	var count = usr.length
 	if(count && count > 0){
 		res.json({message: `User ${user.login} already exists!`})
@@ -163,17 +165,17 @@ app.post('/login', async (req,res) => {
 		res.json({message: "Password is too short!"})
 		return false;
 	}
-	var usr = await db.findDocFieldsByFilter('users', {login: user.login, password: user.password})
+	var usr = await db.findDocFieldsByFilter('users', {login: user.login.trim().toLowerCase(), password: user.password.trim()})
 	var count = usr.length
 	var returnedUser = {
 		canLogin: false
 	}
 	if(count && count > 0){
 		var usr = usr[0];
-		var tokens = await db.findDocFieldsByFilter('tokens', {userName: usr.login})
+		var tokens = await db.findDocFieldsByFilter('tokens', {userName: usr.login.trim().toLowerCase()})
 		var token = undefined;
 		var ttl = 120000
-		
+		 
 		tokens.forEach(t=>{
 			var date1 = new Date(t.created / 1000 + ttl) / 1;
 			var date = new Date().getTime() / 1000;
@@ -220,5 +222,84 @@ app.post('/checkToken', async (req,res) => {
 	}
 });
 
+app.post('/getAllUsersPosts', async(req, res) => {
+	// var posts = await db.findDocFieldsByFilter('posts', {author: req.body.name})
+	var posts = await db.findDocFieldsByFilter('posts', {author: req.body.name})
+	res.json(posts)
+})
+// app.get('/testowanko', async(req,res) => {
+	
+// 	console.log('test')
+// 	var p = {
+// 		"title":"Lorem continued","createdAt":"27.4.2019 - 20:7:12","lastModified":"27.4.2019 - 20:7:12","content":{"blocks":[{"key":"cq0hp","text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer velit ipsum, imperdiet nec odio at, venenatis viverra tortor. Morbi consectetur magna elit, et rutrum turpis dictum vitae. In sed nulla sagittis, gravida est ac, mattis velit. Suspendisse potenti. Sed congue eu lacus eu eleifend. Morbi felis dui, porta et fringilla pulvinar, pharetra in sem. Nullam sollicitudin sodales nulla. Vivamus ac condimentum magna.","type":"header-three","depth":0,"inlineStyleRanges":[{"offset":0,"length":422,"style":"color-rgb(0,0,0)"},{"offset":0,"length":422,"style":"bgcolor-rgb(255,255,255)"},{"offset":0,"length":422,"style":"fontfamily-Open Sans\", Arial, sans-serif"},{"offset":0,"length":316,"style":"fontsize-24"},{"offset":316,"length":106,"style":"fontsize-60"}],"entityRanges":[],"data":{"text-align":"justify"}},{"key":"9c921","text":"Etiam quis odio lobortis, interdum eros at, pellentesque odio. Aenean mollis neque id risus scelerisque, sed tincidunt risus convallis. Praesent efficitur ipsum ut sodales pretium. Suspendisse condimentum urna quis nunc sodales, quis sagittis arcu ultrices. Nullam congue pretium laoreet. Curabitur ante metus, fermentum vitae eros nec, finibus aliquam eros. Curabitur luctus tempus nibh id tincidunt. Suspendisse sed dignissim lectus. Nunc euismod nisi ac odio pellentesque, vestibulum gravida sapien pretium. Vivamus semper quam vel erat faucibus pretium. Sed efficitur odio id dignissim pharetra. Nulla volutpat aliquet enim vel aliquam. Fusce elementum auctor tempor.","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":671,"style":"color-rgb(0,0,0)"},{"offset":0,"length":671,"style":"bgcolor-rgb(255,255,255)"},{"offset":0,"length":671,"style":"fontsize-14"},{"offset":0,"length":671,"style":"fontfamily-Open Sans\", Arial, sans-serif"}],"entityRanges":[],"data":{"text-align":"justify"}},{"key":"fksb1","text":"Etiam hendrerit feugiat elit, ac pharetra sem tempus a. Integer ut facilisis turpis. Praesent ullamcorper aliquam fringilla. Nam egestas dui vitae eros sollicitudin pulvinar. Nam ac sapien eu dui facilisis faucibus. Nullam vitae orci eget turpis maximus accumsan ac nec massa. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed eget convallis neque. Maecenas ut felis nisi. Vivamus nec arcu lobortis, venenatis dolor et, pretium arcu. Ut at malesuada ex. Aenean justo diam, porttitor non ligula et, porta rhoncus odio. Sed quis tincidunt dui. Nullam ultricies elit quis ligula cursus, sed fermentum orci tincidunt. Maecenas non gravida justo.","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":683,"style":"color-rgb(0,0,0)"},{"offset":0,"length":683,"style":"bgcolor-rgb(255,255,255)"},{"offset":0,"length":683,"style":"fontsize-14"},{"offset":0,"length":683,"style":"fontfamily-Open Sans\", Arial, sans-serif"}],"entityRanges":[],"data":{"text-align":"justify"}},{"key":"76dc4","text":"Nam in orci augue. Fusce nec hendrerit odio. Proin cursus, augue id pretium egestas, tellus erat dignissim lectus, eget dignissim nulla tellus ut ante. Donec imperdiet, diam sit amet tincidunt sollicitudin, massa nisl viverra erat, vel euismod erat sapien in urna. Phasellus ultrices dignissim dictum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus erat ac mi tincidunt condimentum.","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":437,"style":"color-rgb(0,0,0)"},{"offset":0,"length":437,"style":"bgcolor-rgb(255,255,255)"},{"offset":0,"length":437,"style":"fontsize-14"},{"offset":0,"length":437,"style":"fontfamily-Open Sans\", Arial, sans-serif"}],"entityRanges":[],"data":{"text-align":"justify"}},{"key":"99dq0","text":"Aenean quis ex ut ex suscipit molestie. Phasellus tortor metus, pellentesque quis convallis eget, ornare vel ligula. Nam ultrices interdum diam, vel sodales magna venenatis in. Ut viverra lorem eu urna aliquet commodo. Praesent mollis in lectus vitae dignissim. Ut varius diam ut semper tempor. Vestibulum varius blandit feugiat. Phasellus faucibus convallis leo. ","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":363,"style":"color-rgb(0,0,0)"},{"offset":0,"length":363,"style":"bgcolor-rgb(255,255,255)"},{"offset":0,"length":363,"style":"fontsize-14"},{"offset":0,"length":363,"style":"fontfamily-Open Sans\", Arial, sans-serif"}],"entityRanges":[],"data":{"text-align":"justify"}}],"entityMap":{}},"author":"admin"}
+// 	db.insertDocumentWithIndex('posts', p);
+// 	res.send('dziala')
+// })
+
+app.post('/addNewPost', async(req,res) => {
+	var post = req.body.post
+	if(req.body.post){
+		await db.insertDocumentWithIndex('posts', {
+			title: post.title,
+			content: post.content,
+			author: post.author,
+			createdAt: Date.now(),
+			lastModified: Date.now()
+		})
+		res.json({
+			message: "Succesfully added new post!"
+		})
+	}
+	res.json({
+		message: "Something went wrong..."
+	})
+})
+
+app.post('/getPostToEdit', async function(req,res){
+	var query = req.body;
+	var rtn = await db.findDocFieldsByFilter('posts',{idx: parseInt(query.idx), author: query.author});
+	console.log(query)
+	console.log(rtn)
+	if(rtn.length === 1)
+		res.json(rtn[0])
+	else
+		res.send({
+			message: 'This is an error!'
+		});
+
+}); 
+
+app.post('/editPost', async(req,res) => {
+	var editedPost = req.body.post;
+	delete editedPost['_id']
+	console.log(editedPost)
+	var foundPost = await db.findDocFieldsByFilter('posts', {author: editedPost.author, idx: parseInt(editedPost.idx)})
+	// if there's a post, proceed
+	if(foundPost.length === 1){ 
+		await db.findOneAndUpdate('posts', {author: editedPost.author, idx: editedPost.idx}, editedPost);
+		res.json({
+			message: 'Succesfully edited post.'
+		})
+	}else {
+		res.json({
+			message: 'There is something wrong...'
+		})
+	}
+})
+ 
+app.post('/deletePost', async(req,res) => {
+	var delPost = req.body.post;
+	var foundPost = await db.findDocFieldsByFilter('posts', {author: editedPost.author, id: editedPost.id})
+	if(foundPost.length === 1){
+		await db.removeDocByFilter('posts', {author: editedPost.author, id: editedPost.id});
+		res.json({
+			message: 'Succesfully removed post.'
+		})
+	}else {
+		res.json({
+			message: 'There is something wrong...'
+		})
+	}
+})
 server.listen(_PORT);
 console.log(`Serwer ruszyl: http://localhost:${_PORT}`);

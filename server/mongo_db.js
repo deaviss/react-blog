@@ -44,6 +44,13 @@ class mongoDbClient {
     }
   }
 
+  async removeDocByFilter(coll, query) {
+    if(!query){
+      throw Error("mongoClient.removeDocByFilter: query is not an object");
+    }
+    return await this.db.collection(coll).remove(query).toArray();
+  }
+
   async findDocFieldsByFilter(coll, query, projection, lmt) {
     if(!query){
       throw Error("mongoClient.findDocFieldsByFilter: query is not an object");

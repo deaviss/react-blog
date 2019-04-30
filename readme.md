@@ -17,9 +17,9 @@ Then go to './client/' and run 'npm run dev' to run react client via parcel.
 3) Receiving all comments from specific post  
 4) Posting new comments to specific post  
 5) Logging (a simple version)  
+6) Dashboard where an admin can add new post or modify existing posts (posts at the moment are hard-coded in the database)  
 
 ## To-do
-1) Dashboard where an admin can add new post or modify existing posts (posts at the moment are hard-coded in the database)  
-2) Better styling. Almost everything is now scaleable with 'vh' so the page looks the same as you zoom in/out  
-3) Post rating from 1 to 5  
-4) Comment rating (this does exist, but it's hard-coded)
+1) Better styling. Almost everything is now scaleable with 'vh' so the page looks the same as you zoom in/out  
+2) Post rating from 1 to 5  
+3) Comment rating (this does exist, but it's hard-coded)

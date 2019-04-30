@@ -14,6 +14,8 @@ if(getUser()){
 }
 
 
+console.log('user',getUser())
+
 
 
 const app = <Provider store={store}>

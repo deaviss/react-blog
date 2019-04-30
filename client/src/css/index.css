@@ -1,3 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
 * {
   margin: 0;
   padding: 0;
@@ -13,6 +16,7 @@
   width: 13vh;
   height: 13vh;
   animation: spin 2s linear infinite;
+  margin: auto;
 }
 @keyframes spin {
   0% {

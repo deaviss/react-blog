@@ -12,10 +12,16 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "draft-convert": "^2.1.4",
+    "draft-js": "^0.10.5",
+    "draftjs-to-html": "^0.8.4",
+    "html-to-draftjs": "^1.4.0",
     "hyphen": "^1.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-draft-wysiwyg": "^1.13.2",
     "react-redux": "^7.0.2",
+    "react-render-html": "^0.6.0",
     "react-router-dom": "^5.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
